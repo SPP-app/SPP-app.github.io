@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Registration</title>
+			<script type="text/javascript">
+	function sendRegistration(){
+		var notification = document.getElementById("notification");
+		notification.innerHTML="HALLO??";
+		var url = window.location.href;
+		var splitted = url.split('?token=');
+		if(splitted.length == 1){
+			notification.innerHTML="Kein Token";
+			notification.style.color="red";
+		}else{
+			
+			var token = splitted[1];
+			
+				
+			var data = {
+				"verification_code": token,
+			};
+			$.ajax({
+				type: "POST",
+				url: "fjobilabs.de:8383/api/users/0/email-confirmation",
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=utf-8",
+				crossDomain: true,
+				dataType: "json",
+				success: function (data, status, jqXHR) {
+
+					notification.innerHTML="Registration successful!";
+					notification.style.color="green";
+					//TODO maybe link to app now
+					var applink = document.getElementById("applink");
+					applink.text = "Return to app";
+					applink.href = "https://wwww.google.de";
+				},
+
+				error: function (jqXHR, status) {
+					// error handler
+					console.log(jqXHR);
+					notification.innerHTML="Failed to register user";
+					notification.style.color="red";
+				}
+				});
+			}
+			
+	
+	}	
+	
+	window.onload = sendRegistration;
+
+	</script>
+	</head>
+	<body>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<br />
+	<br />
+	<p id="notification"> 
+	
+	Sending registration to server...
+	</p>
+	
+	</body>
+</html>
